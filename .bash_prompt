@@ -3,16 +3,16 @@ if [ -f ~/.bash_colors ]; then
 fi
 
 # Actual script
-HEAD=5
-TAIL=15
-SPLIT='...'
+BPC_HEAD=5
+BPC_TAIL=15
+BPC_SPLIT='...'
 
 function bash_prompt_command() {
     pwd=${PWD/#$HOME/\~}
-    if (( ${#pwd} > $(( $HEAD + $TAIL + ${#SPLIT} )) )); then
-        local head=${pwd:0:$HEAD}
-        local tail=${pwd:$(( ${#pwd} - $TAIL ))}
-        pwd="$head$SPLIT$tail"
+    if (( ${#pwd} > $(( $BPC_HEAD + $BPC_TAIL + ${#BPC_SPLIT} )) )); then
+        local head=${pwd:0:$BPC_HEAD}
+        local tail=${pwd:$(( ${#pwd} - $BPC_TAIL ))}
+        pwd="$head$BPC_SPLIT$tail"
     fi
 
     # added git support
