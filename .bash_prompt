@@ -1,0 +1,37 @@
+if [ -f ~/.bash_colors ]; then
+    . ~/.bash_colors
+fi
+
+# Actual script
+HEAD=5
+TAIL=15
+SPLIT='...'
+
+function bash_prompt_command() {
+    pwd=${PWD/#$HOME/\~}
+    if (( ${#pwd} > $(( $HEAD + $TAIL + ${#SPLIT} )) )); then
+        local head=${pwd:0:$HEAD}
+        local tail=${pwd:$(( ${#pwd} - $TAIL ))}
+        pwd="$head$SPLIT$tail"
+    fi
+
+    # added git support
+    if [ $( type -t __git_ps1 ) ]; then
+        git=$(__git_ps1)
+    else
+        git=''
+    fi
+}
+
+PROMPT_COMMAND=bash_prompt_command
+
+PS1="$R\u$N@$C\h$N:$G\$pwd$N$Y\$git$N $ "
+
+case $TERM in
+    xterm*|rxvt*)
+         PS1="\[\033]0;\u@\h:\$pwd\$git\007\]$PS1"
+         ;;
+    screen)
+         PS1="\[\033k\h:\$pwd\$git\033\\\\\]\[\033]0;\u@\h:\$pwd\$git\007\]$PS1"
+        ;;
+esac
